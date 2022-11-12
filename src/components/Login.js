@@ -3,26 +3,22 @@ import {CardText, CardTitle, Container, Card, Col, Row, Button, Form, FormGroup,
 import Header from "./Header";
 import axios from "axios";
 
-import { API_URL } from "../constants";
+import { LOGIN_API_URL } from "../constants";
 //import { keyboard } from "@testing-library/user-event/dist/keyboard";
 
-class RegisterForm extends React.Component {
+class LoginForm extends React.Component {
   state = {
     pk: 0,
     Username: "",
-    Email: "",
     Password: "",
-    Password2:"",
-    Firstname: "",
-    Lastname:"",
     items: [],
-    errorMessage: {"username":"", "password":"", "password2":"", "email":""} 
+    errorMessage: ""
   };
 
   componentDidMount() {
     if (this.props.student) {
-      const { pk, Username, Email, Password, Password2, Firstname, Lastname} = this.props.student;
-      this.setState({ pk, Username, Email, Password, Password2, Firstname, Lastname});
+      const { pk, Username, Password} = this.props.student;
+      this.setState({ pk, Username, Password});
     }
   }
 
@@ -32,27 +28,28 @@ class RegisterForm extends React.Component {
 
   createStudent = e => {
     e.preventDefault();
-    axios.post(API_URL, this.state)
+    axios.post(LOGIN_API_URL, this.state)
     .then(response => this.setState({items: response.data}))
     .catch(err => { 
       console.log('err', err)
-      //if(err.response.data.email)
-      //var obj = err.response.data
-      //this.setState({errorMessage: err.response.data.email});
-      Object.entries(err.response.data).forEach(entry => {
-        const [key, value] = entry;
-        console.log(key, value);
-        const newErrMsg = { ...this.state.errorMessage, [key] : value.join('\n') };
-        console.log(newErrMsg) 
-        this.setState(prevState => ({ ...prevState, errorMessage : newErrMsg }));
-      });      
+      if(err.response.data.detail){
+        console.log("inside if", err.response.data.detail)
+        this.setState({  errorMessage: err.response.data.detail});
+      }
+    //   Object.entries(err.response.data).forEach(entry => {
+    //     const [key, value] = entry;
+    //     console.log(key, value);
+    //     const newErrMsg = { ...this.state.errorMessage, [key] : value.join('\n') };
+    //     console.log(newErrMsg) 
+    //     this.setState(prevState => ({ ...prevState, errorMessage : newErrMsg }));
+    //   });      
         
     })
   }; 
 
   editStudent = e => {
     e.preventDefault();
-    axios.put(API_URL + this.state.pk, this.state).then(() => {
+    axios.put(LOGIN_API_URL + this.state.pk, this.state).then(() => {
       this.props.resetState();
       this.props.toggle();
     });
@@ -107,19 +104,7 @@ paddingLeft: `10%`}}>
             onChange={this.onChange}
             value={this.defaultIfEmpty(this.state.username)}
           />
-           { this.state.errorMessage.username &&
-            <h6 style={{ color:`red`}}> { this.state.errorMessage.username } </h6> }
-        </FormGroup>
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input
-            type="email"
-            name="email"
-            onChange={this.onChange}
-            value={this.defaultIfEmpty(this.state.email)}
-          />
-          { this.state.errorMessage.email &&
-            <h6 style={{ color:`red`}}> { this.state.errorMessage.email } </h6> }
+          
         </FormGroup>
         <FormGroup>
           <Label for="Password">Password</Label>
@@ -130,21 +115,13 @@ paddingLeft: `10%`}}>
             value={this.defaultIfEmpty(this.state.password)}
           />
         </FormGroup>
-        { this.state.errorMessage.password &&
-            <h6 style={{ color:`red`}}> { this.state.errorMessage.password } </h6> }
-        <FormGroup>
-          <Label for="Password2">Confirm Password</Label>
-          <Input
-            type="password"
-            name="password2"
-            onChange={this.onChange}
-            value={this.defaultIfEmpty(this.state.password2)}
-          />
-        </FormGroup>
+        { this.state.errorMessage &&
+            <h6 style={{ color:`red`}}> { this.state.errorMessage } </h6> }
+       
         
         <br/>
         <div className="d-grid gap-2">
-        <Button color="danger" size="lg">Sign up</Button>
+        <Button color="danger" size="lg">Login</Button>
         </div>
         </div>
       </Form>
@@ -159,4 +136,4 @@ paddingLeft: `10%`}}>
   }
 }
 
-export default RegisterForm;
+export default LoginForm;

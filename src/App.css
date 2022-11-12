@@ -47,3 +47,11 @@ label {
 h2 {
   color: white;
 }
+.vl {
+  border-left: 2px solid;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}

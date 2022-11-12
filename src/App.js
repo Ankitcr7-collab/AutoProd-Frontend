@@ -1,9 +1,11 @@
-import React, { Component, Fragment } from "react";
-import logo from './logo.svg';
+import React, { Component } from "react";
+//import logo from './logo.svg';
 import './App.css';
-import Header from "./components/Header";
+//import Header from "./components/Header";
 import Register from "./components/Register";
-
+import LoginForm from "./components/Login";
+import { Routes, Route } from "react-router-dom";
+import ProductDescription from "./components/ProductDescription";
 
 //function App() {
 //  return (
@@ -28,20 +30,18 @@ import Register from "./components/Register";
 
 
 
-class App extends Component {
-  render() {
+function App() {
+   
     return (
-    <div className="crimson">
-
-      <Fragment>
-        <Header />
-        <Register />
-
-      </Fragment>
-
-      </div>
+           <>  
+            <Routes>
+              <Route exact path="/" element={<Register/>}/>             
+              <Route exact path="/ProductDescription" element = {<ProductDescription/>} />
+              <Route exact path="/Login" element = {<LoginForm/>}/>
+            </Routes>   
+          </>
     );
+    
   }
-}
 
 export default App;

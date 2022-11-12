@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Navbar, NavbarBrand} from "reactstrap";
 
-class Header extends Component {
+class ProductHeader extends Component {
   render() {
     return (
       <div className="text-center" >
 <Navbar
     className="my-2"
-    color="dark"
+    color="black"
     dark
   >
     <NavbarBrand href="/">
@@ -26,4 +26,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default ProductHeader;
